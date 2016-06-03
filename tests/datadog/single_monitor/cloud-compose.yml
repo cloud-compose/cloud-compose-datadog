@@ -1,0 +1,10 @@
+datadog:
+  name: single-test
+  monitors:
+    -
+      tag: mongodb-single-test
+      message: "Test Single" 
+      name: "MongoDB Single Test"
+      query: 'max(last_1h):avg:mongodb.replset.replicationlag{clustername:%(name)s} by {nodeid} < -10'
+  notify:
+    - '@slack-arc-platform-ops'
