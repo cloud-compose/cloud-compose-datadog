@@ -105,22 +105,6 @@ class DatadogController:
 			name = monitor.get('name')
 			options = monitor.get('options')
 
-			# notified = self.config_data.get('notify', [''])
-
-			# message = '{} {}'.format(monitor_message, ' '.join(notified))
-
-			# if monitor.get('notify_no_data', False):
-			# 	options = OPTIONS_NOTIFY_NO_DATA
-			# else:
-			# 	options = OPTIONS_DEFAULT
-
-			# name = '[{}] {}'.format(self.cluster_name, monitor_name)
-			# tags = [
-			# 	'clustername:{}'.format(self.cluster_name),
-			# 	'monitor:{}'.format(monitor_tag)
-			# ]
-			# query = monitor_query % self.config_data
-
 			old_monitor = self._get_existing_monitor(tags)
 
 			if old_monitor:
@@ -131,8 +115,7 @@ class DatadogController:
 			else:
 				print 'Creating monitor {} for cluster {}.'.format(monitor_tag, self.cluster_name)
 				api.Monitor.create(type=TYPE, query=query, name=name, message=message, options=options, tags=tags)
-			# print query
-			# print tags
+				
 			print '-'*16
 
 
