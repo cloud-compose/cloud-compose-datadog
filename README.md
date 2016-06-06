@@ -9,7 +9,7 @@ Once you have the configuration files, run the following commands to create the 
 ```
 cd my-configs
 pip install cloud-compose cloud-compose-datadog
-pip freeze -r > requirements.txt
+pip freeze > requirements.txt
 cloud-compose datadog monitors up
 ```
 

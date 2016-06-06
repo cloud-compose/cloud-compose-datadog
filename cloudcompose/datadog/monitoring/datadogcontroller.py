@@ -1,6 +1,5 @@
 from os import environ
 from cloudcompose.util import require_env_var
-import logging
 from datadog import api, initialize
 
 import pprint
@@ -20,20 +19,17 @@ OPTIONS_DEFAULT = {
 
 class DatadogController:
 	def __init__(self, cloud_config):
-		logging.basicConfig(level=logging.ERROR)
-		self.logger = logging.getLogger(__name__)
 		self.cloud_config = cloud_config
 		self.config_data = cloud_config.config_data('datadog')
 		self.cluster_name = cloud_config.config_data('datadog')['name']
 		self.monitor_data = cloud_config.config_data('datadog')['monitors']
-		# for monitor in self.monitor_data:
-		# 	monitor['notify_no_data'] = monitor.get('notify_no_data', False)
+		
+
 		self.datadog_api_key = require_env_var('DATADOG_API_KEY')
 		self.datadog_app_key = require_env_var('DATADOG_APP_KEY')
 		self._datadog_init()
 
 		self.pp = pprint.PrettyPrinter()
-		# self.pp.pprint(self.monitor_data)
 
 
 	def up(self):
@@ -65,6 +61,8 @@ class DatadogController:
 	def _delete_monitors(self):
 		for monitor in self.monitor_data:
 			monitor_tag = monitor.get('tag')
+			# Search for the monitor using the tags that would have been created 
+			#		through datadog monitors up
 			tags = [
 				'clustername:{}'.format(self.cluster_name),
 				'monitor:{}'.format(monitor_tag)
@@ -76,9 +74,10 @@ class DatadogController:
 					monitor_id = match['id']
 					print 'Deleting monitor {}'.format(monitor_tag)
 					api.Monitor.delete(monitor_id)
-			# print '-'*16
 
 	def _resolve_monitor(self, monitor):
+		# Take the monitor definition from the yaml and transform it 
+		#		to what will be used to create the actual monitor
 		monitor['tags'] = ['clustername:{}'.format(self.cluster_name),
 				'monitor:{}'.format(monitor.get('tag'))]
 		monitor['query'] = monitor.get('query') % self.config_data
@@ -97,7 +96,6 @@ class DatadogController:
 	def _create_monitors(self):
 		for monitor in self.monitor_data:
 			self._resolve_monitor(monitor)
-			# self.pp.pprint(monitor)
 			monitor_tag = monitor.get('tag')
 			tags = monitor.get('tags')
 			message = monitor.get('message')
@@ -110,12 +108,14 @@ class DatadogController:
 			if old_monitor:
 				# Update rather than create
 				monitor_id = old_monitor['id']
-				print 'Updating monitor {}'.format(monitor_tag)
+				print 'Updating monitor {}:'.format(monitor_tag)
 				api.Monitor.update(id=monitor_id, query=query, name=name, message=message, options=options, tags=tags)
+				self.pp.pprint(monitor)
 			else:
-				print 'Creating monitor {} for cluster {}.'.format(monitor_tag, self.cluster_name)
+				print 'Creating monitor {} for cluster {}:'.format(monitor_tag, self.cluster_name)
 				api.Monitor.create(type=TYPE, query=query, name=name, message=message, options=options, tags=tags)
-				
+				self.pp.pprint(monitor)
+
 			print '-'*16
 
 
