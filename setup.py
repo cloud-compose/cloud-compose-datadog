@@ -4,7 +4,7 @@ import warnings
 
 setup(
     name='cloud-compose-monitoring',
-    version='0.1',
+    version='0.2.0',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -32,8 +32,8 @@ setup(
     namespace_packages = ['cloudcompose'],
     author="Daniel Hoerauf and the WaPo platform tools team",
     author_email="opensource@washingtonpost.com",
-    url="https://github.com/cloud-compose",
-    download_url = "https://github.com/cloud-compose",
-    keywords = ['cloud', 'compose', 'aws', 'datadog', 'monitoring'],
+    url="https://github.com/cloud-compose/cloud-compose-datadog",
+    download_url = "https://github.com/cloud-compose/cloud-compose-datadog/archive/master.zip",
+    keywords = ['cloud', 'compose', 'datadog', 'monitoring'],
     classifiers = []
 )
