@@ -1,0 +1,18 @@
+datadog:
+  name: multi-test
+  time: "last_1h"
+  use_cluster_prefix: false
+  monitors:
+    -
+      tag: datadog-multi-1
+      message: "Test Multi 1" 
+      name: "Datadog Multi Test"
+      query: 'max(%(time)s):avg:test{clustername:%(name)s}'
+    -
+      tag: datadog-multi-2
+      message: "Test Multi 2"
+      name: "Datadog Multi Test"
+      query: 'max(%(time)s):avg:test{clustername:%(name)s}'
+  notify:
+    - '@slack-notify-one'
+    - '@slack-notify-two'
