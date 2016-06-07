@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 import warnings
 
 setup(
-    name='cloud-compose-monitoring',
-    version='0.2.0',
+    name='cloud-compose-datadog',
+    version='0.1.0',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
