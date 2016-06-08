@@ -1,5 +1,8 @@
 datadog:
   name: single-test
+  options:
+    notify_no_data: true
+    no_data_timeframe: 480
   monitors:
     -
       tag: mongodb-single-test

@@ -8,6 +8,9 @@ datadog:
       message: "Test Multi 1" 
       name: "Datadog Multi Test"
       query: 'max(%(time)s):avg:test{clustername:%(name)s}'
+      options: 
+        notify_no_data: true
+        no_data_timeframe: 480
     -
       tag: datadog-multi-2
       message: "Test Multi 2"

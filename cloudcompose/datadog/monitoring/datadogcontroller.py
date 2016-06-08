@@ -23,13 +23,13 @@ class DatadogController:
 		self.config_data = cloud_config.config_data('datadog')
 		self.cluster_name = cloud_config.config_data('datadog')['name']
 		self.monitor_data = cloud_config.config_data('datadog')['monitors']
-		
+		self.default_options = cloud_config.config_data('datadog').get('options', {})
 
 		self.datadog_api_key = require_env_var('DATADOG_API_KEY')
 		self.datadog_app_key = require_env_var('DATADOG_APP_KEY')
 		self._datadog_init()
 
-		self.pp = pprint.PrettyPrinter()
+		self.pp = pprint.PrettyPrinter(indent=2)
 
 
 	def up(self):
@@ -88,10 +88,11 @@ class DatadogController:
 		notified = self.config_data.get('notify', [''])
 		monitor['message'] = '{} {}'.format(monitor.get('message'), ' '.join(notified))
 
-		if monitor.get('notify_no_data', False):
-			monitor['options'] = OPTIONS_NOTIFY_NO_DATA
-		else:
-			monitor['options'] = OPTIONS_DEFAULT
+		# monitor['options'] = {}
+		monitor['options'] = monitor.get('options', {}) # Instantiate it to an empty dict if it's not present
+		for option in self.default_options:
+			default_val = self.default_options[option]
+			monitor['options'][option] = monitor.get('options', {}).get(option, default_val) 
 
 	def _create_monitors(self):
 		for monitor in self.monitor_data:

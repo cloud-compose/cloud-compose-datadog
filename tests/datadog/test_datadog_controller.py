@@ -42,6 +42,17 @@ class DatadogMonitoringTest(TestCase):
 		queries = [monitor.get('query') for monitor in controller.monitor_data]
 		self.assertEquals(['max(last_1h):avg:test{clustername:multi-test}' for i in range(2)], queries)
 
+	def test_monitor_options(self):
+		controller = self._datadog_controller('single_monitor')
+		[controller._resolve_monitor(mon) for mon in controller.monitor_data]
+		optionses = [monitor.get('options') for monitor in controller.monitor_data]
+		self.assertEquals([{'notify_no_data': True, 'no_data_timeframe': 480}], optionses)
+
+		controller = self._datadog_controller('multi_monitor')
+		[controller._resolve_monitor(mon) for mon in controller.monitor_data]
+		optionses = [monitor.get('options') for monitor in controller.monitor_data]
+		self.assertEquals([{'notify_no_data': True, 'no_data_timeframe': 480}, {}], optionses)
+
 	def test_monitor_message(self):
 		controller = self._datadog_controller('single_monitor')
 		[controller._resolve_monitor(mon) for mon in controller.monitor_data]
