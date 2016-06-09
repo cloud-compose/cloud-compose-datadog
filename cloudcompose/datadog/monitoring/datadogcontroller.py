@@ -92,7 +92,8 @@ class DatadogController:
 		monitor['options'] = monitor.get('options', {}) # Instantiate it to an empty dict if it's not present
 		for option in self.default_options:
 			default_val = self.default_options[option]
-			monitor['options'][option] = monitor.get('options', {}).get(option, default_val) 
+			# Adds any default options not defined on the monitor level to the monitor
+			monitor['options'][option] = monitor['options'].get(option, default_val) 
 
 	def _create_monitors(self):
 		for monitor in self.monitor_data:
@@ -110,13 +111,14 @@ class DatadogController:
 				# Update rather than create
 				monitor_id = old_monitor['id']
 				print 'Updating monitor {}:'.format(monitor_tag)
-				api.Monitor.update(id=monitor_id, query=query, name=name, message=message, options=options, tags=tags)
-				self.pp.pprint(monitor)
+				response = api.Monitor.update(id=monitor_id, query=query, name=name, message=message, options=options, tags=tags)
+				# self.pp.pprint(monitor)
+				self.pp.pprint(response)
 			else:
 				print 'Creating monitor {} for cluster {}:'.format(monitor_tag, self.cluster_name)
-				api.Monitor.create(type=TYPE, query=query, name=name, message=message, options=options, tags=tags)
-				self.pp.pprint(monitor)
-
+				response = api.Monitor.create(type=TYPE, query=query, name=name, message=message, options=options, tags=tags)
+				# self.pp.pprint(monitor)
+				self.pp.pprint(response)
 			print '-'*16
 
 
