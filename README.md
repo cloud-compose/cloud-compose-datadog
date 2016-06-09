@@ -3,7 +3,7 @@ The cloud compose datadog plugin simplifies the process of creating and deleting
 
 * A cloud-compose.yml with desired configurations for your monitors
 
-For an example project that uses Cloud Compose to create monitors see [Docker MongoDB](https://github.com/washingtonpost/docker-mongodb).
+For an example project that uses Cloud Compose to create monitors see [Docker ECS](https://github.com/washingtonpost/docker-ecs).
 
 Once you have the configuration files, run the following commands to create the monitors:
 ```
