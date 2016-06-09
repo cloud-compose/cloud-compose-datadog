@@ -1,0 +1,23 @@
+datadog:
+  name: option-test
+  use_cluster_prefix: false
+  options:
+    notify_no_data: true
+  monitors:
+    -
+      tag: datadog-option-1
+      message: "Test Option 1" 
+      name: "Datadog Option Test"
+      query: 'max(last_1h):avg:test{clustername:%(name)s}'
+      options: 
+        no_data_timeframe: 480
+    -
+      tag: datadog-option-2
+      message: "Test Option 2"
+      name: "Datadog Option Test"
+      query: 'max(last_1h):avg:test{clustername:%(name)s}'
+      options:
+        notify_no_data: false
+  notify:
+    - '@slack-notify-one'
+    - '@slack-notify-two'
