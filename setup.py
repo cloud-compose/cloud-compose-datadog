@@ -4,7 +4,7 @@ import warnings
 
 setup(
     name='cloud-compose-datadog',
-    version='0.1.1',
+    version='0.1.2',
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -22,7 +22,7 @@ setup(
     author="Daniel Hoerauf and the WaPo platform tools team",
     author_email="opensource@washingtonpost.com",
     url="https://github.com/cloud-compose/cloud-compose-datadog",
-    download_url = "https://github.com/cloud-compose/cloud-compose-cluster/tarball/v0.1.1",
+    download_url = "https://github.com/cloud-compose/cloud-compose-cluster/tarball/v0.1.2",
     keywords = ['cloud', 'compose', 'datadog', 'monitoring'],
     classifiers = []
 )
