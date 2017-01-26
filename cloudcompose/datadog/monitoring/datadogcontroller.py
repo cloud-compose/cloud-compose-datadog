@@ -86,7 +86,10 @@ class DatadogController:
         if cluster_prefix:
             monitor['name'] = '[{}] {}'.format(self.cluster_name, monitor.get('name'))
 
-        notified = self.config_data.get('notify', [''])
+        notified = monitor.get('notify', [])
+        if not len(notified):
+           notified = self.config_data.get('notify', [])
+
         monitor['message'] = '{} {}'.format(monitor.get('message'), ' '.join(notified))
 
         # monitor['options'] = {}
