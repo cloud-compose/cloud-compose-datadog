@@ -1,3 +1,5 @@
+from __future__ import print_function
+from builtins import object
 from os import environ
 from cloudcompose.util import require_env_var
 from datadog import api, initialize
@@ -18,7 +20,7 @@ OPTIONS_DEFAULT = {
 
 
 
-class DatadogController:
+class DatadogController(object):
     def __init__(self, cloud_config):
         self.cloud_config = cloud_config
         self.config_data = cloud_config.config_data('datadog')
@@ -35,7 +37,7 @@ class DatadogController:
 
     def up(self):
         if not self.monitor_data:
-            print 'No monitors defined\n\tDoing nothing'
+            print('No monitors defined\n\tDoing nothing')
         else:
             try:
                 self._create_monitors()
@@ -44,7 +46,7 @@ class DatadogController:
 
     def down(self):
         if not self.monitor_data:
-            print 'No monitors defined\n\tDoing nothing'
+            print('No monitors defined\n\tDoing nothing')
         else:
             try:
                 self._delete_monitors()
@@ -73,7 +75,7 @@ class DatadogController:
             if match:
                 if 'id' in match:
                     monitor_id = match['id']
-                    print 'Deleting monitor {}'.format(monitor_tag)
+                    print('Deleting monitor {}'.format(monitor_tag))
                     api.Monitor.delete(monitor_id)
 
     def _resolve_monitor(self, monitor):
@@ -114,16 +116,16 @@ class DatadogController:
             if old_monitor:
                 # Update rather than create
                 monitor_id = old_monitor['id']
-                print 'Updating monitor {}:'.format(monitor_tag)
+                print('Updating monitor {}:'.format(monitor_tag))
                 response = api.Monitor.update(id=monitor_id, query=query, name=name, message=message, options=options, tags=tags)
                 # self.pp.pprint(monitor)
                 self.pp.pprint(response)
             else:
-                print 'Creating monitor {} for cluster {}:'.format(monitor_tag, self.cluster_name)
+                print('Creating monitor {} for cluster {}:'.format(monitor_tag, self.cluster_name))
                 response = api.Monitor.create(type=TYPE, query=query, name=name, message=message, options=options, tags=tags)
                 # self.pp.pprint(monitor)
                 self.pp.pprint(response)
-            print '-'*16
+            print('-'*16)
 
 
     def _get_existing_monitor(self, tags):

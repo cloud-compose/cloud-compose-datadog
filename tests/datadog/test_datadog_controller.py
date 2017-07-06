@@ -1,3 +1,4 @@
+from builtins import range
 from unittest import TestCase
 from cloudcompose.datadog.monitoring.datadogcontroller import DatadogController
 from cloudcompose.config import CloudConfig

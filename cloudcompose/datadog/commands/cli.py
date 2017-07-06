@@ -1,3 +1,4 @@
+from __future__ import print_function
 import click
 from cloudcompose.datadog.monitoring.datadogcontroller import DatadogController
 from cloudcompose.config import CloudConfig
@@ -23,4 +24,4 @@ def monitors(mode):
         else:
             raise CloudComposeException('{} not a valid argument'.format(mode))
     except CloudComposeException as ex:
-        print ex.message
+        print(ex.message)
